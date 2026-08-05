@@ -1,41 +1,32 @@
 import { useEffect, useState } from "react";
-import { getTasks } from "../services/taskService";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+
+import type { DragEndEvent } from "@dnd-kit/core";
+
 import type { Task } from "../types/task";
+import { getTasks, updateTask } from "../services/taskService";
+
+import Column from "../components/Column";
 import TaskModal from "../components/TaskModal";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  useEffect(() => {
-    async function loadTasks() {
-      try {
-        const data = await getTasks();
-        setTasks(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    loadTasks();
-  }, []);
-
-  const todo = tasks.filter((task) => task.status === "todo");
-  const doing = tasks.filter((task) => task.status === "doing");
-  const done = tasks.filter((task) => task.status === "done");
-
-  function priorityColor(priority: Task["priority"]) {
-    switch (priority) {
-      case "high":
-        return "bg-red-500";
-      case "medium":
-        return "bg-yellow-500";
-      case "low":
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
-    }
-  }
+  // Configura o sensor para exigir um movimento mínimo de 8px antes de ativar o drag
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
   async function loadTasks() {
     try {
@@ -50,55 +41,45 @@ export default function Home() {
     loadTasks();
   }, []);
 
-  function Column({
-    title,
-    tasks,
-  }: {
-    title: string;
-    tasks: Task[];
-  }) {
-    return (
-      <div className="bg-gray-100 rounded-xl p-4 shadow-md flex flex-col">
-        <h2 className="text-xl font-bold mb-4">{title}</h2>
+  const todo = tasks.filter((task) => task.status === "todo");
+  const doing = tasks.filter((task) => task.status === "doing");
+  const done = tasks.filter((task) => task.status === "done");
 
-        <div className="space-y-4">
-          {tasks.length === 0 && (
-            <div className="text-gray-400 italic">
-              Nenhuma tarefa
-            </div>
-          )}
+  async function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
 
-          {tasks.map((task) => (
-            <div onClick={() => setSelectedTask(task)}
-              key={task.id}
-              className="bg-white rounded-xl shadow p-4 border-l-8 border-blue-500 hover:shadow-lg transition cursor-pointer"
-            >
-              <div className="flex justify-between items-start">
-                <h3 className="font-bold text-lg">
-                  {task.title}
-                </h3>
+    if (!over) return;
 
-                <span
-                  className={`text-white text-xs px-2 py-1 rounded-full ${priorityColor(
-                    task.priority
-                  )}`}
-                >
-                  {task.priority}
-                </span>
-              </div>
+    const taskId = String(active.id);
 
-              <p className="text-gray-600 mt-2">
-                {task.description}
-              </p>
+    const newStatus = over.id as Task["status"];
 
-              <div className="mt-4 text-sm text-gray-500">
-                📅 {task.deadline}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    const task = tasks.find((t) => t.id === taskId);
+
+    if (!task) return;
+
+    if (task.status === newStatus) return;
+
+    const updatedTask = {
+      ...task,
+      status: newStatus,
+    };
+
+    // Atualização otimista
+    setTasks((current) =>
+      current.map((t) =>
+        t.id === taskId ? updatedTask : t
+      )
     );
+
+    try {
+      await updateTask(taskId, updatedTask);
+    } catch (err) {
+      console.error(err);
+
+      // Recarrega caso dê erro
+      loadTasks();
+    }
   }
 
   return (
@@ -107,20 +88,44 @@ export default function Home() {
         Kanban
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Column title="📌 A Fazer" tasks={todo} />
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        <Column title="🚀 Em Andamento" tasks={doing} />
+          <Column
+            id="todo"
+            title="📌 A Fazer"
+            tasks={todo}
+            onTaskClick={setSelectedTask}
+          />
 
-        <Column title="✅ Concluído" tasks={done} />
-      </div>
+          <Column
+            id="doing"
+            title="🚀 Em Andamento"
+            tasks={doing}
+            onTaskClick={setSelectedTask}
+          />
+
+          <Column
+            id="done"
+            title="✅ Concluído"
+            tasks={done}
+            onTaskClick={setSelectedTask}
+          />
+
+        </div>
+      </DndContext>
+
       {selectedTask && (
-      <TaskModal
+        <TaskModal
           task={selectedTask}
           onClose={() => setSelectedTask(null)}
-      />
-  )}
+          onUpdated={loadTasks}
+        />
+      )}
     </div>
-    
   );
 }
