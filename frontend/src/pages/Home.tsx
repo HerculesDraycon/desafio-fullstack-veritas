@@ -14,9 +14,11 @@ import { getTasks, updateTask } from "../services/taskService";
 
 import Column from "../components/Column";
 import TaskModal from "../components/TaskModal";
+import CreateTaskModal from "../components/CreateTaskModal";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   // Configura o sensor para exigir um movimento mínimo de 8px antes de ativar o drag
@@ -83,49 +85,77 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-200 p-8">
-      <h1 className="text-4xl font-bold text-center mb-10">
-        Kanban
-      </h1>
+    <div className="min-h-screen bg-slate-100 text-slate-800 p-4 md:p-8 w-full">
+      <div className="max-w-7xl mx-auto">
+        {/* Cabeçalho */}
+        <div className="flex justify-between items-center mb-8 border-b border-slate-200 pb-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Kanban
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Gerencie suas tarefas e acompanhe o progresso
+            </p>
+          </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          <Column
-            id="todo"
-            title="📌 A Fazer"
-            tasks={todo}
-            onTaskClick={setSelectedTask}
-          />
-
-          <Column
-            id="doing"
-            title="🚀 Em Andamento"
-            tasks={doing}
-            onTaskClick={setSelectedTask}
-          />
-
-          <Column
-            id="done"
-            title="✅ Concluído"
-            tasks={done}
-            onTaskClick={setSelectedTask}
-          />
-
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <span className="text-lg font-bold">+</span>
+            <span>Nova Task</span>
+          </button>
         </div>
-      </DndContext>
 
-      {selectedTask && (
-        <TaskModal
-          task={selectedTask}
-          onClose={() => setSelectedTask(null)}
-          onUpdated={loadTasks}
-        />
-      )}
+        {/* Grid do Board Kanban */}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            <Column
+              id="todo"
+              title="A Fazer"
+              tasks={todo}
+              onTaskClick={setSelectedTask}
+            />
+
+            <Column
+              id="doing"
+              title="Em Andamento"
+              tasks={doing}
+              onTaskClick={setSelectedTask}
+            />
+
+            <Column
+              id="done"
+              title="Concluído"
+              tasks={done}
+              onTaskClick={setSelectedTask}
+            />
+          </div>
+        </DndContext>
+
+        {/* Modais */}
+        {selectedTask && (
+          <TaskModal
+            task={selectedTask}
+            onClose={() => setSelectedTask(null)}
+            onUpdated={loadTasks}
+          />
+        )}
+
+        {isCreateModalOpen && (
+          <CreateTaskModal
+            onClose={() => setIsCreateModalOpen(false)}
+            onCreated={() => {
+              loadTasks();
+              setIsCreateModalOpen(false);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }
