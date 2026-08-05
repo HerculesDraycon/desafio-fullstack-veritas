@@ -41,7 +41,7 @@ func (s *TaskDataBase) CreateTask(
 	defer s.mutex.Unlock()
 
 	if priority == "" {
-		priority = "Media"
+		priority = "medium"
 	}
 
 	now := time.Now()
@@ -109,7 +109,7 @@ func (s *TaskDataBase) GetAllTasks(searchTask string, sortOrder string, filter s
 		allTasks = orderedTasks
 	}
 
-	priorities := map[string]int{"Alta": 3, "Média": 2, "Baixa": 1}
+	priorities := map[string]int{"high": 3, "medium": 2, "low": 1}
 
 	if sortOrder == "priority_grw" {
 		sort.Slice(allTasks, func(l, r int) bool {
@@ -155,7 +155,7 @@ func (s *TaskDataBase) UpdateTask(id string, payload UpdateTaskPayload) (*Task, 
 	}
 	if payload.Deadline != nil {
 		if payload.Deadline.IsZero() {
-			return nil, errors.New("deadline inválida")
+			return nil, errors.New("Prazo inválido.")
 		}
 
 		task.Deadline = *payload.Deadline

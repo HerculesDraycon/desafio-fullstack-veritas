@@ -7,15 +7,15 @@ definitions:
         type: string
       priority:
         enum:
-        - Alta
-        - Média
-        - Baixa
+        - high
+        - medium
+        - low
         type: string
       status:
         enum:
-        - A Fazer
-        - Em Progresso
-        - Concluídas
+        - todo
+        - doing
+        - done
         type: string
       title:
         minLength: 3
@@ -36,15 +36,15 @@ definitions:
         type: string
       priority:
         enum:
-        - Alta
-        - Média
-        - Baixa
+        - high
+        - medium
+        - low
         type: string
       status:
         enum:
-        - A Fazer
-        - Em Progresso
-        - Concluídas
+        - todo
+        - doing
+        - done
         type: string
       title:
         description: The title is mandatory and must have at least 3 characters.
@@ -63,15 +63,15 @@ definitions:
         type: string
       priority:
         enum:
-        - Alta
-        - Média
-        - Baixa
+        - high
+        - medium
+        - low
         type: string
       status:
         enum:
-        - A Fazer
-        - Em Progresso
-        - Concluídas
+        - todo
+        - doing
+        - done
         type: string
       title:
         minLength: 3
@@ -80,9 +80,9 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: API para o desafio fullstack da Veritas (React + Go).
+  description: Aplicação de Kanban de tarefas (React + Go).
   termsOfService: 'http:'
-  title: API Kanban de Tarefas (Veritas)
+  title: Kanban de Tarefas - Desafio Fullstack Veritas
   version: "1.0"
 paths:
   /tasks:

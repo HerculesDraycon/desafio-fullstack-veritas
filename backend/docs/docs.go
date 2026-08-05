@@ -281,17 +281,17 @@ const docTemplate = `{
                 "priority": {
                     "type": "string",
                     "enum": [
-                        "Alta",
-                        "Média",
-                        "Baixa"
+                        "high",
+                        "medium",
+                        "low"
                     ]
                 },
                 "status": {
                     "type": "string",
                     "enum": [
-                        "A Fazer",
-                        "Em Progresso",
-                        "Concluídas"
+                        "todo",
+                        "doing",
+                        "done"
                     ]
                 },
                 "title": {
@@ -322,17 +322,17 @@ const docTemplate = `{
                 "priority": {
                     "type": "string",
                     "enum": [
-                        "Alta",
-                        "Média",
-                        "Baixa"
+                        "high",
+                        "medium",
+                        "low"
                     ]
                 },
                 "status": {
                     "type": "string",
                     "enum": [
-                        "A Fazer",
-                        "Em Progresso",
-                        "Concluídas"
+                        "todo",
+                        "doing",
+                        "done"
                     ]
                 },
                 "title": {
@@ -357,17 +357,17 @@ const docTemplate = `{
                 "priority": {
                     "type": "string",
                     "enum": [
-                        "Alta",
-                        "Média",
-                        "Baixa"
+                        "high",
+                        "medium",
+                        "low"
                     ]
                 },
                 "status": {
                     "type": "string",
                     "enum": [
-                        "A Fazer",
-                        "Em Progresso",
-                        "Concluídas"
+                        "todo",
+                        "doing",
+                        "done"
                     ]
                 },
                 "title": {
@@ -385,8 +385,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "API Kanban de Tarefas (Veritas)",
-	Description:      "API para o desafio fullstack da Veritas (React + Go).",
+	Title:            "Kanban de Tarefas - Desafio Fullstack Veritas",
+	Description:      "Aplicação de Kanban de tarefas (React + Go).",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
