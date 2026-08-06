@@ -1,18 +1,19 @@
+version: "3.9"
+
 services:
-  # --- Back-end Service ---
+
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+    container_name: kanban-backend
     ports:
       - "8080:8080"
 
-  # --- Front end service  ---
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+    container_name: kanban-frontend
     ports:
-      - "3000:80"
+      - "5173:80"
     depends_on:
-      - backend # Back end must be up first
+      - backend
