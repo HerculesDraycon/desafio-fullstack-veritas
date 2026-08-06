@@ -23,6 +23,12 @@ export default function TaskCard({ task, onClick }: Props) {
     opacity: isDragging ? 0.5 : 1,
   };
 
+  const priorityLabels: Record<Task["priority"], string> = {
+    low: "Baixa",
+    medium: "Média",
+    high: "Alta",
+  };
+
   function priorityColor(priority: Task["priority"]) {
     switch (priority) {
       case "high":
@@ -53,7 +59,7 @@ export default function TaskCard({ task, onClick }: Props) {
             task.priority
           )}`}
         >
-          {task.priority}
+          {priorityLabels[task.priority] || task.priority}
         </span>
       </div>
 

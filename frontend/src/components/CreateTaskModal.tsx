@@ -36,7 +36,7 @@ const [task, setTask] = useState<CreateTaskDTO>({
     <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex justify-center items-center p-4 z-50">
       <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-lg relative border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
         
-        {/* Botão X para fechar */}
+        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg hover:bg-slate-100 cursor-pointer"
@@ -46,7 +46,7 @@ const [task, setTask] = useState<CreateTaskDTO>({
           ✕
         </button>
 
-        {/* Cabeçalho */}
+        {/* Header */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-slate-800">
             Criar Nova Task
@@ -58,13 +58,14 @@ const [task, setTask] = useState<CreateTaskDTO>({
 
         <form onSubmit={handleSubmit} className="space-y-5">
           
-          {/* Campo Título */}
+          {/* Title Field */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">
               Título <span className="text-rose-500">*</span>
             </label>
             <input
               required
+              minLength={3}
               className="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-sm"
               placeholder="Ex: Refatorar API de autenticação"
               value={task.title}
@@ -74,7 +75,7 @@ const [task, setTask] = useState<CreateTaskDTO>({
             />
           </div>
 
-          {/* Campo Descrição */}
+          {/* Description Field */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">
               Descrição
@@ -93,10 +94,9 @@ const [task, setTask] = useState<CreateTaskDTO>({
             />
           </div>
 
-          {/* Container em Grid para Prazo e Prioridade */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            {/* Campo Prazo Limite */}
+            {/* Deadline Field */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                 📅 Prazo Limite
@@ -114,7 +114,7 @@ const [task, setTask] = useState<CreateTaskDTO>({
               />
             </div>
 
-            {/* Campo Nível de Prioridade */}
+            {/* Priority */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
                 ⚡ Prioridade
@@ -137,7 +137,7 @@ const [task, setTask] = useState<CreateTaskDTO>({
 
           </div>
 
-          {/* Rodapé e Ações */}
+          {/* Actions */}
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
