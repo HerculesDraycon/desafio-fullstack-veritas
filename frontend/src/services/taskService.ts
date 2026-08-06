@@ -2,8 +2,19 @@ import api from "./api";
 import type { Task, CreateTaskDTO } from "../types/task";
 import type { UpdateTaskPayload } from "../types/dto/updateTaskPayload";
 
-export async function getTasks(): Promise<Task[]> {
-  const { data } = await api.get<Task[]>("/tasks");
+interface GetTasksParams {
+  searchTask?: string;
+  sortOrder?: string;
+  filter?: string;
+}
+
+export async function getTasks(
+  params?: GetTasksParams
+): Promise<Task[]> {
+  const { data } = await api.get<Task[]>("/tasks", {
+    params,
+  });
+
   return data;
 }
 

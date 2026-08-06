@@ -101,11 +101,11 @@ func (h *TaskHandler) GetTaskById(w http.ResponseWriter, r *http.Request) {
 func (h *TaskHandler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 
 	// Take the query params
-	filterPriority := r.URL.Query().Get("priority")
-	sortOrder := r.URL.Query().Get("sort")
-	searchTask := r.URL.Query().Get("search")
+	filterPriority := r.URL.Query().Get("filter")
+	sortOrder := r.URL.Query().Get("sortOrder")
+	searchTask := r.URL.Query().Get("searchTask")
 
-	tasks, erro := h.data.GetAllTasks(filterPriority, sortOrder, searchTask)
+	tasks, erro := h.data.GetAllTasks(searchTask, sortOrder, filterPriority)
 	if erro != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"erro": "Fail in get tasks"})
 		return
