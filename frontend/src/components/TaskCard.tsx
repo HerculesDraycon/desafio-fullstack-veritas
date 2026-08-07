@@ -56,7 +56,7 @@ export default function TaskCard({ task, onClick }: Props) {
       onClick={onClick}
       className="group bg-slate-800/90 hover:bg-slate-800 rounded-xl p-4 border border-slate-700/70 hover:border-slate-600 shadow-md hover:shadow-xl transition-all cursor-pointer active:scale-[0.99] select-none"
     >
-      {/* Header do Card */}
+      {/* Card Header */}
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-slate-100 text-sm line-clamp-1 group-hover:text-white transition-colors">
           {task.title}
@@ -71,14 +71,14 @@ export default function TaskCard({ task, onClick }: Props) {
         </span>
       </div>
 
-      {/* Descrição */}
+      {/* Description */}
       {task.description && (
         <p className="mt-2 text-slate-400 text-xs line-clamp-2 leading-relaxed">
           {task.description}
         </p>
       )}
 
-      {/* Footer com Prazo */}
+      {/* Footer with Deadline */}
       {formatted && (
         <div className="mt-3.5 pt-2.5 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
           <span className="text-slate-500 font-medium">Prazo:</span>

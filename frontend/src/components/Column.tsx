@@ -28,19 +28,19 @@ export default function Column({
           : "bg-slate-900/60 border-slate-800 hover:border-slate-700/80"
       }`}
     >
-      {/* Cabeçalho da Coluna */}
+      {/* Column Header */}
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
         <h2 className="text-base font-bold text-slate-200 tracking-wide">
           {title}
         </h2>
 
-        {/* Contador de Tarefas */}
+        {/* Task Counter */}
         <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700/50">
           {tasks.length}
         </span>
       </div>
 
-      {/* Lista de Tarefas */}
+      {/* Task List */}
       <div className="space-y-3">
         {tasks.length === 0 && (
           <div className="flex items-center justify-center h-32 rounded-xl border border-dashed border-slate-800 text-xs italic text-slate-500">

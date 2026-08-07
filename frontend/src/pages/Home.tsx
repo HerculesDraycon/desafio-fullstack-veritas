@@ -16,6 +16,7 @@ import Column from "../components/Column";
 import TaskModal from "../components/TaskModal";
 import CreateTaskModal from "../components/CreateTaskModal";
 import Header from "../components/Header";
+import { useDebounce } from "../hooks/useDebounce";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -24,8 +25,9 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [priority, setPriority] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
 
-  // Configura o sensor para exigir um movimento mínimo de 8px antes de ativar o drag
+  // Sensor for 8px minimum movement
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -37,7 +39,7 @@ export default function Home() {
   const loadTasks = useCallback(async () => {
     try {
       const data = await getTasks({
-        searchTask: search,
+        searchTask: debouncedSearch,
         filter: priority,
         sortOrder,
       });
@@ -46,7 +48,7 @@ export default function Home() {
     } catch (error) {
       console.error(error);
     }
-  }, [search, priority, sortOrder]);
+  }, [debouncedSearch, priority, sortOrder]);
 
   useEffect(() => {
     loadTasks();
@@ -76,7 +78,6 @@ export default function Home() {
       status: newStatus,
     };
 
-    // Atualização otimista
     setTasks((current) =>
       current.map((t) =>
         t.id === taskId ? updatedTask : t
@@ -88,7 +89,7 @@ export default function Home() {
     } catch (err) {
       console.error(err);
 
-      // Recarrega caso dê erro
+      // Reload in case of error
       loadTasks();
     }
   }
@@ -107,7 +108,7 @@ export default function Home() {
       <main className="p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
 
-          {/* Cabeçalho */}
+          {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-slate-700/60 pb-5">
             <div>
               <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
@@ -158,7 +159,7 @@ export default function Home() {
             </div>
           </DndContext>
 
-          {/* Modais */}
+          {/* Modal */}
           {selectedTask && (
             <TaskModal
               task={selectedTask}
