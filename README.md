@@ -1,10 +1,10 @@
 # Kanban - Desafio Fullstack (Veritas)
-Esta aplicação é uma solução completa para o desafio de Estágio em Desenvolvimento Fullstack da Veritas Law.  Trata-se de uma aplicação WEB Kanban com backend em Go frontend em React. **Confira o User-flow elaborado:** [Kanban User-flow](https://github.com/HerculesDraycon/desafio-fullstack-veritas/tree/main/docs/user-flow.png)
+Esta aplicação é uma solução completa para o desafio de Estágio em Desenvolvimento Fullstack da Veritas Law.  Trata-se de uma aplicação WEB Kanban com backend em Go e frontend em React. **Confira o User-flow elaborado:** [Kanban User-flow](https://github.com/HerculesDraycon/desafio-fullstack-veritas/tree/main/docs/user-flow.png)
 
-Este projeto cumpre todos os requisitos do MVP proposto nos requisitos do desafio prático e implementa todas as funcionalidades, incluindo:
-- Frontend em React que renderizar três colunas fixas (A Fazer, Em Progresso e Concluídas), permite adicionar, editar, mover e excluir tarefas, além de apresentar feedbacks visuais e consumir dados via API.
+Este projeto cumpre todos os requisitos do MVP propostos no desafio prático e implementa todas as funcionalidades, incluindo:
+- Frontend em React que renderiza três colunas fixas (A Fazer, Em Andamento e Concluídas), permite adicionar, editar, mover e excluir tarefas, além de apresentar feedbacks visuais e consumir dados via API.
 
-- Backend RESTful (CRUD) em Go, armazenamento em memória, validações básicas e configuração de CORS para permitir acesso pelo frontend.
+- Backend RESTful (CRUD) em Go, armazenamento em memória, validações básicas e configuração de CORS para permitir requisições do frontend.
 
 - Funcionalidade de "Arrastar e Soltar" (Drag and Drop) as Tasks entre as colunas.
 
@@ -27,7 +27,7 @@ Não exige a instalação de nada além do Docker Desktop na máquina.
     ```
 2. Navegue até a raiz do projeto
 
-    Onde se agrupam os diretórios de `frontend/` e `backend/`
+    Onde se agrupam os diretórios `frontend/`, `backend/` e `docs/`
     ```bash
     cd desafio-fullstack-veritas
     ```
@@ -58,7 +58,7 @@ Rodar o backend e o frontend em comandos isolados, o que requer a instalação d
     ```
 2. Navegue até a raiz do projeto
 
-    Onde se agrupam os diretórios de `frontend/` e `backend/`
+    Onde se agrupam os diretórios `frontend/`, `backend/` e `docs/`
     ```bash
     cd desafio-fullstack-veritas
     ```
@@ -69,7 +69,7 @@ Rodar o backend e o frontend em comandos isolados, o que requer a instalação d
     ```bash
        go install github.com/swaggo/swag/cmd/swag@latest
     ```
-    ⚠️ Ao executar o backend manualmente ele podem ser exigidos mais módulos necessários. O padrão de instalação é o mesmo do apresentado sobre o Swagger, logo acima.
+    ⚠️ Ao executar o backend manualmente, podem ser exigidos mais módulos necessários e o padrão de instalação é o mesmo do apresentado sobre o Swagger, executando o comando no diretório `backend/`. Existe a possibilidade de que o terminal não reconheça o comando `go` por não encontrar onde ele foi instalado na máquina.
 4. Rodando o Backend
     ```bash
     cd backend
@@ -101,15 +101,15 @@ Rodar o backend e o frontend em comandos isolados, o que requer a instalação d
 ### Backend
 - Pesquisa das Tasks. Foi implementada no Header do frontend uma barra de pesquisas que a cada determinado intervalo, dispara uma Query de dados que são tratados e devolvidos pelo backend em resposta a pesquisa pelo título da Task.
 
-- Validação. Utilizando o go-playground/validator para validar payloads de entrada (DTOs). Regras como required,min=3 (para o uma string) e oneof (para status) garantem a integridade dos dados antes que eles alcancem o processamento interno.
+- Validação. Utilizando o `go-playground/validator` para validar payloads de entrada (DTOs), regras como required,min=3 (para o uma string) e oneof (para status) garantem a integridade dos dados antes que eles alcancem o processamento interno.
 
-- Arquitetura Limpa. Foi implementado o Padrão Repositório (Repository Pattern). A lógica de negócios em `handlers.go` depende de uma interface `data.go` e não da implementação. Isso torna o código fácil de testar e permite trocar o Banco de Dados em memória por um banco externo (como PostgreSQL) futuramente exigindo poucas alterações.
+- Arquitetura Limpa. Foi implementado o Padrão Repositório (Repository Pattern) com a lógica de negócios em `handlers.go` que depende de uma interface `data.go` e não da implementação como um todo. Isso torna o código fácil de testar e permite trocar o Banco de Dados em memória por um banco externo (como PostgreSQL) futuramente, exigindo poucas alterações.
 
 - Prevenção de processos concorrentes. Como o armazenamento dos dados está na memória primária e o Go lida com requisições concorrentes (goroutines), foi utilizado um `sync.RWMutex`. Isso previne disputas no recurso compartilhado, garantindo que o quadro de Tasks possa ser lido ou escrito por múltiplos usuários sem nenhum problema.
 
-- Ordenação e Filtro de Tasks. Processadas no backend (server-side), a lógica de filtragem busca elementos correspondentes ao critério e a ordenação dispõe de opções para organizá-los. O Go recebe parâmetros na Query (ex: ?priority=high&sort=priority_grw) e faz o devido tratamento. Uma arquitetura escalável, que mantém o frontend eficiente.
+- Ordenação e Filtro de Tasks. Processada no backend (server-side), a lógica de filtragem busca objetos da categoria e a ordenação dispõe de opções para organizá-los. O Go recebe parâmetros na Query (ex: ?priority=high&sort=priority_grw) e faz o devido tratamento. Uma arquitetura escalável, que mantém o frontend eficiente.
 
-- Documentação das APIs. A API está documentada com a lib swaggo do Go, gerando uma UI interativa do Swagger.
+- Documentação das APIs. A API está documentada com a biblioteca swaggo do Go, gerando uma UI interativa do Swagger.
 
 ### Frontend
 - Modularização. Os componentes de UI foram implementados de forma dedicada à sua função e reutilizáveis (ex: Header, Collumn, TaskCard), mantendo o App.js totalmene limpo, apenas chamando as página, que também foram organizadas de forma individual no diretório `pages/`.
@@ -125,7 +125,7 @@ Rodar o backend e o frontend em comandos isolados, o que requer a instalação d
 ## Ideias de Melhorias Futuras
 - Cadastrar Usuários. Implementar um sistema de autenticação e associar Tasks aos seus usuários específicos.
 
-- Alertas sobre o prazo. Como o prazo da Task foi um atributo criado nesse projeto, uma implementação futura seria criar alerta no sistema para Tasks que estão próximas do vencimento e uma divisão para Tasks Atrasadas.
+- Alertas sobre o prazo. Como o prazo da Task foi um atributo criado nesse projeto, uma implementação futura seria criar alertas no sistema, para Tasks que estão próximas do vencimento e adicionar uma divisão para Tasks Atrasadas.
 
 - Testes. Com mais tempo disponível e a possibilidade de escalonar a produção, seriam implementados testes que garantam a integridade das *features* implementadas.
 <br><br><br>
