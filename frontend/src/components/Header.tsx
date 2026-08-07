@@ -38,7 +38,7 @@ export default function Header({
                     Veritas Law
                 </h1>
                 <span className="text-xs text-slate-500 font-medium hidden sm:inline-block">
-                    Gestão Jurídica
+                    Da Constituição ao M&A
                 </span>
                 </div>
             </div>

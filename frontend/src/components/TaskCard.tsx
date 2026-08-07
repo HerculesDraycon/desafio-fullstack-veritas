@@ -29,6 +29,11 @@ export default function TaskCard({ task, onClick }: Props) {
     high: "Alta",
   };
 
+  const formatted = new Date(task.deadline).toLocaleString("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
+
   function priorityColor(priority: Task["priority"]) {
     switch (priority) {
       case "high":
@@ -52,7 +57,7 @@ export default function TaskCard({ task, onClick }: Props) {
       className="bg-white rounded-xl shadow p-4 border-l-8 border-blue-500 hover:shadow-lg transition cursor-pointer"
     >
       <div className="flex justify-between">
-        <h3 className="font-bold">{task.title}</h3>
+        <h3 className="font-bold line-clamp-1 wrap-break-word">{task.title}</h3>
 
         <span
           className={`text-xs text-white px-2 py-1 rounded-full ${priorityColor(
@@ -63,12 +68,13 @@ export default function TaskCard({ task, onClick }: Props) {
         </span>
       </div>
 
-      <p className="mt-2 text-gray-600">
+      <p className="mt-2 text-gray-600 text-sm line-clamp-2 wrap-break-word">
         {task.description}
       </p>
 
-      <div className="mt-3 text-sm text-gray-500">
-        📅 {task.deadline}
+      <div className="mt-3 text-sm">
+        <p>Prazo definido:</p>
+        {formatted}
       </div>
     </div>
   );

@@ -25,9 +25,10 @@ const [task, setTask] = useState<CreateTaskDTO>({
 
     const payload = {
       ...task,
-      deadline: `${task.deadline}T00:00:00Z`,
+      deadline: `${task.deadline}:00-03:00`,
     };
 
+    console.log(payload)
     await createTask(payload);
     onCreated();
   }
@@ -99,10 +100,11 @@ const [task, setTask] = useState<CreateTaskDTO>({
             {/* Deadline Field */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                📅 Prazo Limite
+                Prazo Limite
               </label>
               <input
-                type="date"
+                required
+                type="datetime-local"
                 className="w-full border border-slate-300 rounded-lg px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-sm"
                 value={task.deadline}
                 onChange={(e) =>
@@ -117,7 +119,7 @@ const [task, setTask] = useState<CreateTaskDTO>({
             {/* Priority */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                ⚡ Prioridade
+                Prioridade
               </label>
               <select
                 className="w-full border border-slate-300 rounded-lg px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-sm bg-white cursor-pointer"

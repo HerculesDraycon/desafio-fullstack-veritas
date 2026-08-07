@@ -116,7 +116,7 @@ export default function Home() {
                 Kanban
               </h1>
 
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-slate-800 mt-1">
                 Gerencie suas tarefas e acompanhe o progresso
               </p>
             </div>

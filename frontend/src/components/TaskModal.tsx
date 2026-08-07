@@ -36,15 +36,12 @@ export default function TaskModal({
         deadline: new Date(editedTask.deadline).toISOString(),
         };
 
-        console.log("Payload enviado:", payload);
-
         await updateTask(editedTask.id, payload);
 
         onUpdated?.();
         onClose();
     } catch (err) {
         console.error(err);
-        alert("Erro ao atualizar tarefa.");
     } finally {
         setLoading(false);
     }
@@ -104,6 +101,8 @@ export default function TaskModal({
               Título <span className="text-rose-500">*</span>
             </label>
             <input
+              required
+              minLength={3}
               className="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm"
               value={editedTask.title}
               onChange={(e) =>
@@ -137,7 +136,7 @@ export default function TaskModal({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                ⚡ Prioridade
+                Prioridade
               </label>
               <select
                 className="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm bg-white cursor-pointer"
@@ -157,7 +156,7 @@ export default function TaskModal({
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                📊 Status
+                Status
               </label>
               <select
                 className="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm bg-white cursor-pointer"
@@ -179,9 +178,10 @@ export default function TaskModal({
           {/* Deadline Field */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-              📅 Prazo Limite
+              Prazo Limite
             </label>
             <input
+              required
               type="datetime-local"
               className="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm"
               value={editedTask.deadline.substring(0, 16)}
