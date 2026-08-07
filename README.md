@@ -3,10 +3,15 @@ Esta aplicação é uma solução completa para o desafio de Estágio em Desenvo
 
 Este projeto cumpre todos os requisitos do MVP proposto nos requisitos do desafio prático e implementa todas as funcionalidades, incluindo:
 - Frontend em React que renderizar três colunas fixas (A Fazer, Em Progresso e Concluídas), permite adicionar, editar, mover e excluir tarefas, além de apresentar feedbacks visuais e consumir dados via API.
+
 - Backend RESTful (CRUD) em Go, armazenamento em memória, validações básicas e configuração de CORS para permitir acesso pelo frontend.
+
 - Funcionalidade de "Arrastar e Soltar" (Drag and Drop) as Tasks entre as colunas.
+
 - Filtragem, Busca e Ordenação de Tasks tratadas no backend.
+
 - Documentação de API e Endpoints com Swagger.
+
 - Projeto todo disposto em Container com Docker e Docker Compose.
 
 ## Como rodar a aplicação:
@@ -94,13 +99,32 @@ Rodar o backend e o frontend em comandos isolados, o que requer a instalação d
 
 ## Boas Práticas (Performance Técnica)
 ### Backend
+- Pesquisa das Tasks. Foi implementada no Header do frontend uma barra de pesquisas que a cada determinado intervalo, dispara uma Query de dados que são tratados e devolvidos pelo backend em resposta a pesquisa pelo título da Task.
+
+- Validação. Utilizando o go-playground/validator para validar payloads de entrada (DTOs). Regras como required,min=3 (para o uma string) e oneof (para status) garantem a integridade dos dados antes que eles alcancem o processamento interno.
+
+- Arquitetura Limpa. Foi implementado o Padrão Repositório (Repository Pattern). A lógica de negócios em `handlers.go` depende de uma interface `data.go` e não da implementação. Isso torna o código fácil de testar e permite trocar o Banco de Dados em memória por um banco externo (como PostgreSQL) futuramente exigindo poucas alterações.
+
+- Prevenção de processos concorrentes. Como o armazenamento dos dados está na memória primária e o Go lida com requisições concorrentes (goroutines), foi utilizado um `sync.RWMutex`. Isso previne disputas no recurso compartilhado, garantindo que o quadro de Tasks possa ser lido ou escrito por múltiplos usuários sem nenhum problema.
+
+- Ordenação e Filtro de Tasks. Processadas no backend (server-side), a lógica de filtragem busca elementos correspondentes ao critério e a ordenação dispõe de opções para organizá-los. O Go recebe parâmetros na Query (ex: ?priority=high&sort=priority_grw) e faz o devido tratamento. Uma arquitetura escalável, que mantém o frontend eficiente.
+
+- Documentação das APIs. A API está documentada com a lib swaggo do Go, gerando uma UI interativa do Swagger.
 
 ### Frontend
+- Modularização. Os componentes de UI foram implementados de forma dedicada à sua função e reutilizáveis (ex: Header, Collumn, TaskCard), mantendo o App.js totalmene limpo, apenas chamando as página, que também foram organizadas de forma individual no diretório `pages/`.
+
+- Debouncing. A barra de pesquisa utiliza um *debounce* de 300ms. Isso evita que o frontend envie uma requisição para a API a cada tecla digitada, melhorando a performance.
+
+- Drag and Drop. Foi implementada a funcionalidade de "arrastar e soltar" usando a biblioteca @dnd-kit. O usuário move o card da Task e a UI atualiza instantaneamente, então, uma chamada axios.PUT é enviada ao backend para persistir a mudança de status.
+
 
 ### Infraestrutura
-
-
+- Docker Compose. Os componentes do projetos são reunidos no arquivo docker-compose.yaml, permitindo que o backend e o frontend instalem suas dependências, rodem e se comuniquem com um único comando.
 
 ## Ideias de Melhorias Futuras
+- Cadastrar Usuários. Implementar um sistema de autenticação e associar Tasks aos seus usuários específicos.
 
-## Limitações Reconhecidas ?????
+- Alertas sobre o prazo. Como o prazo da Task foi um atributo criado nesse projeto, uma implementação futura seria criar alerta no sistema para Tasks que estão próximas do vencimento e uma divisão para Tasks Atrasadas.
+
+- Testes. Com mais tempo disponível e a possibilidade de escalonar a produção, seriam implementados testes que garantam a integridade das *features* implementadas.
