@@ -94,14 +94,12 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800">
+    <div className="min-h-screen bg-[#0F172A] text-slate-100 font-sans antialiased">
       <Header
         search={search}
         onSearchChange={setSearch}
-        
         priority={priority}
         onPriorityChange={setPriority}
-
         sortOrder={sortOrder}
         onSortOrderChange={setSortOrder}
       />
@@ -110,23 +108,23 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
 
           {/* Cabeçalho */}
-          <div className="flex justify-between items-center mb-8 border-b border-slate-200 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-slate-700/60 pb-5">
             <div>
-              <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
                 Kanban
               </h1>
 
-              <p className="text-sm text-slate-800 mt-1">
+              <p className="text-sm text-slate-400 mt-1">
                 Gerencie suas tarefas e acompanhe o progresso
               </p>
             </div>
 
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-lg shadow-sm hover:shadow transition-all flex items-center gap-2 cursor-pointer"
+              className="bg-[#C4BD72] hover:bg-[#B3AC68] text-slate-950 font-semibold px-4 py-2.5 rounded-xl shadow-sm hover:shadow-amber-500/10 transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-400/30 active:scale-98 shrink-0"
             >
-              <span className="text-lg font-bold">+</span>
-              <span>Nova Task</span>
+              <span className="text-lg font-bold leading-none">+</span>
+              <span className="text-sm">Nova Task</span>
             </button>
           </div>
 

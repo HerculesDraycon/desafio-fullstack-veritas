@@ -22,20 +22,28 @@ export default function Column({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-xl p-4 shadow-md transition min-h-[500px]
-      ${
+      className={`rounded-2xl p-4 transition-all duration-200 min-h-[500px] border ${
         isOver
-          ? "bg-blue-100"
-          : "bg-gray-100"
+          ? "bg-slate-800/90 border-amber-500/50 ring-2 ring-amber-500/20"
+          : "bg-slate-900/60 border-slate-800 hover:border-slate-700/80"
       }`}
     >
-      <h2 className="text-xl font-bold mb-4">
-        {title}
-      </h2>
+      {/* Cabeçalho da Coluna */}
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+        <h2 className="text-base font-bold text-slate-200 tracking-wide">
+          {title}
+        </h2>
 
-      <div className="space-y-4">
+        {/* Contador de Tarefas */}
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700/50">
+          {tasks.length}
+        </span>
+      </div>
+
+      {/* Lista de Tarefas */}
+      <div className="space-y-3">
         {tasks.length === 0 && (
-          <div className="italic text-gray-400">
+          <div className="flex items-center justify-center h-32 rounded-xl border border-dashed border-slate-800 text-xs italic text-slate-500">
             Nenhuma tarefa
           </div>
         )}

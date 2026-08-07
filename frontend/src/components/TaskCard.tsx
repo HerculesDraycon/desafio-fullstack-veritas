@@ -24,9 +24,9 @@ export default function TaskCard({ task, onClick }: Props) {
   };
 
   const priorityLabels: Record<Task["priority"], string> = {
-    low: "Baixa",
-    medium: "Média",
-    high: "Alta",
+    low: "Baixa Prioridade",
+    medium: "Média Prioridade",
+    high: "Alta Prioridade",
   };
 
   const formatted = new Date(task.deadline).toLocaleString("pt-BR", {
@@ -54,13 +54,16 @@ export default function TaskCard({ task, onClick }: Props) {
       {...listeners}
       {...attributes}
       onClick={onClick}
-      className="bg-white rounded-xl shadow p-4 border-l-8 border-blue-500 hover:shadow-lg transition cursor-pointer"
+      className="group bg-slate-800/90 hover:bg-slate-800 rounded-xl p-4 border border-slate-700/70 hover:border-slate-600 shadow-md hover:shadow-xl transition-all cursor-pointer active:scale-[0.99] select-none"
     >
-      <div className="flex justify-between">
-        <h3 className="font-bold line-clamp-1 wrap-break-word">{task.title}</h3>
+      {/* Header do Card */}
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="font-semibold text-slate-100 text-sm line-clamp-1 group-hover:text-white transition-colors">
+          {task.title}
+        </h3>
 
         <span
-          className={`text-xs text-white px-2 py-1 rounded-full ${priorityColor(
+          className={`text-[11px] font-medium px-2.5 py-0.5 rounded-md border shrink-0 ${priorityColor(
             task.priority
           )}`}
         >
@@ -68,14 +71,20 @@ export default function TaskCard({ task, onClick }: Props) {
         </span>
       </div>
 
-      <p className="mt-2 text-gray-600 text-sm line-clamp-2 wrap-break-word">
-        {task.description}
-      </p>
+      {/* Descrição */}
+      {task.description && (
+        <p className="mt-2 text-slate-400 text-xs line-clamp-2 leading-relaxed">
+          {task.description}
+        </p>
+      )}
 
-      <div className="mt-3 text-sm">
-        <p>Prazo definido:</p>
-        {formatted}
-      </div>
+      {/* Footer com Prazo */}
+      {formatted && (
+        <div className="mt-3.5 pt-2.5 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
+          <span className="text-slate-500 font-medium">Prazo:</span>
+          <span className="font-medium text-slate-300">{formatted}</span>
+        </div>
+      )}
     </div>
   );
 }
