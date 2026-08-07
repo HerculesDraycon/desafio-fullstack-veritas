@@ -36,8 +36,8 @@ func main() {
 	api.HandleFunc("/tasks/{id}", taskHandler.UpdateTask).Methods(http.MethodPut)
 	api.HandleFunc("/tasks/{id}", taskHandler.DeleteTask).Methods(http.MethodDelete)
 
-	headersOK := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	originsOK := handlers.AllowedOrigins([]string{"*"}) // Permit all origins
+	headersOK := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization", "Accept"})
+	originsOK := handlers.AllowedOrigins([]string{"http://localhost:5173", "http://localhost"}) // Permits React and Nginx
 	methodsOK := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions})
 
 	corsRouter := handlers.CORS(originsOK, headersOK, methodsOK)(router)

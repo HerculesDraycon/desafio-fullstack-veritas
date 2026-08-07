@@ -97,7 +97,7 @@ Rodar o backend e o frontend em comandos isolados, o que requer a instalação d
     **Backend (API Go):** http://localhost:8080<br>
     **Documentação (Swagger):** http://localhost:8080/swagger/index.html
 
-## Boas Práticas (Performance Técnica)
+## Boas Práticas Usadas(Performance Técnica)
 ### Backend
 - Pesquisa das Tasks. Foi implementada no Header do frontend uma barra de pesquisas que a cada determinado intervalo, dispara uma Query de dados que são tratados e devolvidos pelo backend em resposta a pesquisa pelo título da Task.
 
