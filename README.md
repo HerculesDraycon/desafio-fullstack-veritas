@@ -1,5 +1,5 @@
 # Kanban - Desafio Fullstack (Veritas)
-Esta aplicação é uma solução completa para o desafio de Estágio em Desenvolvimento Fullstack da Veritas Law.  Trata-se de uma aplicação WEB Kanban com backend em Go frontend em React.
+Esta aplicação é uma solução completa para o desafio de Estágio em Desenvolvimento Fullstack da Veritas Law.  Trata-se de uma aplicação WEB Kanban com backend em Go frontend em React. **Confira o User-flow elaborado:** [Kanban User-flow](https://github.com/HerculesDraycon/desafio-fullstack-veritas/tree/main/docs/user-flow.png)
 
 Este projeto cumpre todos os requisitos do MVP proposto nos requisitos do desafio prático e implementa todas as funcionalidades, incluindo:
 - Frontend em React que renderizar três colunas fixas (A Fazer, Em Progresso e Concluídas), permite adicionar, editar, mover e excluir tarefas, além de apresentar feedbacks visuais e consumir dados via API.
